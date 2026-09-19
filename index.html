@@ -477,6 +477,65 @@
     cursor: pointer;
     white-space: nowrap;
   }
+  
+  /* 時間選択モーダルの修正 */
+  .time-picker-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 1000;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .time-picker-content {
+    background: #fff;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 12px 12px 0 0;
+    padding: 20px;
+    animation: slideUp 0.3s ease;
+  }
+  @keyframes slideUp {
+    from { transform: translateY(100%); }
+    to { transform: translateY(0); }
+  }
+  .time-picker-header {
+    background: var(--primary);
+    color: #fff;
+    padding: 16px;
+    margin: -20px -20px 20px -20px;
+    border-radius: 12px 12px 0 0;
+    text-align: center;
+    font-size: 32px;
+    font-weight: 300;
+  }
+  .time-picker-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+  }
+  .time-picker-buttons button {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .time-picker-buttons .cancel {
+    background: #f0f0f0;
+    color: var(--text);
+  }
+  .time-picker-buttons .confirm {
+    background: var(--spring);
+    color: #fff;
+  }
 </style>
 </head>
 <body>
@@ -509,11 +568,11 @@
       <div class="progress-bar"><div class="fill" id="progress-fill"></div></div>
     </div>
     <div class="card">
-      <div class="card-title">😣 今月のガマン合計</div>
+      <div class="card-title"> 今月のガマン合計</div>
       <div class="value" id="sum-saving" style="font-size:18px;color:var(--spring);font-weight:600;">¥0</div>
     </div>
     <div class="card">
-      <div class="card-title">⏰ 残業・不払い合計</div>
+      <div class="card-title"> 残業・不払い合計</div>
       <div style="display:flex;justify-content:space-around;text-align:center;">
         <div><div class="label" style="font-size:11px;color:var(--text-light);">残業</div><div id="sum-overtime" style="font-weight:600;">0分</div></div>
         <div><div class="label" style="font-size:11px;color:var(--text-light);">不払い</div><div id="sum-unpaid" style="font-weight:600;color:var(--danger);">0分</div></div>
@@ -586,7 +645,7 @@
   <!-- 集計 -->
   <section id="view-summary" class="view">
     <div class="card">
-      <div class="card-title">💸 支出分類別集計</div>
+      <div class="card-title"> 支出分類別集計</div>
       <table class="summary-table">
         <thead><tr><th>分類</th><th style="text-align:right;">金額</th></tr></thead>
         <tbody id="expense-summary-body"></tbody>
@@ -612,7 +671,7 @@
     </div>
 
     <div class="card">
-      <div class="card-title">⏰ 時給計算 <span class="help-icon" data-help="hourly">?</span></div>
+      <div class="card-title"> 時給計算 <span class="help-icon" data-help="hourly">?</span></div>
       <div class="calc-box">
         <div class="row"><span>Ⓐ 時間単価</span><span id="calc-hourly">¥0</span></div>
         <div class="row"><span>残業時間合計</span><span id="calc-ot-total">0分</span></div>
@@ -714,7 +773,7 @@
   <button data-view="record"><span class="icon">📝</span>記録</button>
   <button data-view="summary"><span class="icon">📊</span>集計</button>
   <button data-view="check"><span class="icon">🔍</span>点検</button>
-  <button data-view="settings"><span class="icon">⚙️</span>設定</button>
+  <button data-view="settings"><span class="icon">️</span>設定</button>
 </nav>
 
 <div id="toast"></div>
@@ -998,50 +1057,62 @@ const App = {
       el.innerHTML = `✅ 通知は許可されています（毎日 ${time} に通知）`;
       document.getElementById('notify-time').value = time;
     } else if (perm === 'denied') {
-      el.textContent = '❌ 通知がブロックされています。ブラウザの設定から変更してください';
+      el.innerHTML = ' 通知がブロックされています。<a href="#" onclick="App.openNotificationSettings();return false;" style="color:var(--spring);">設定</a>から変更してください';
     } else {
       el.textContent = '⚪ まだ通知が許可されていません。下のボタンから設定できます';
     }
   },
   async setupNotification() {
     if (!('Notification' in window)) {
-      this.toast('⚠️ このブラウザは通知に対応していません');
+      this.toast('️ このブラウザは通知に対応していません');
       return;
     }
+    
     const time = document.getElementById('notify-time').value || '21:00';
     localStorage.setItem('notify_time', time);
 
-    // Service Worker登録
-    if ('serviceWorker' in navigator) {
-      try {
-        const reg = await navigator.serviceWorker.register('./sw.js', { scope: './' });
-        // Service Workerに通知時刻を伝える
-        reg.active && reg.active.postMessage({ type: 'SET_TIME', time: time });
-        this.toast('✅ Service Workerを登録しました');
-      } catch (err) {
-        console.error('SW登録失敗:', err);
-        this.toast('⚠️ Service Worker登録に失敗');
+    // 通知権限を要求
+    try {
+      const perm = await Notification.requestPermission();
+      
+      if (perm === 'granted') {
+        // Service Worker登録
+        if ('serviceWorker' in navigator) {
+          try {
+            const reg = await navigator.serviceWorker.register('./sw.js', { scope: './' });
+            // Service Workerに通知時刻を伝える
+            reg.active && reg.active.postMessage({ type: 'SET_TIME', time: time });
+            this.toast('✅ 通知を設定しました');
+            
+            // テスト通知
+            new Notification('📝 春闘手帳', {
+              body: `毎日${time}に記録のお知らせが届きます`,
+              tag: 'test-notification'
+            });
+          } catch (err) {
+            console.error('SW登録失敗:', err);
+            this.toast('⚠️ Service Worker登録に失敗');
+          }
+        }
+      } else if (perm === 'denied') {
+        this.toast('⚠️ 通知が拒否されました');
+      } else {
+        this.toast('⚠️ 通知権限が保留されました');
       }
+    } catch (err) {
+      console.error('通知権限エラー:', err);
+      this.toast('️ 通知設定にエラーが発生しました');
     }
-
-    // 通知許可リクエスト
-    if (Notification.permission === 'granted') {
-      this.toast('✅ 通知設定を保存しました');
-      this.updateNotifyStatus();
-      return;
-    }
-    const perm = await Notification.requestPermission();
-    if (perm === 'granted') {
-      this.toast('🔔 通知を有効にしました');
-      // テスト通知
-      new Notification('📝 春闘手帳', {
-        body: `毎日${time}に記録のお知らせが届きます`,
-        tag: 'test-notification'
-      });
-    } else {
-      this.toast('⚠️ 通知が許可されませんでした');
-    }
+    
     this.updateNotifyStatus();
+  },
+  openNotificationSettings() {
+    // ブラウザの設定画面を開く（iOS/Android）
+    if (/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+      alert('iOSの設定アプリ → Safari → 「通知」から許可してください');
+    } else if (/Android/.test(navigator.userAgent)) {
+      alert('Chromeの設定 → サイト設定 → 通知 から許可してください');
+    }
   },
   checkYesterdayUnsaved() {
     const today = new Date();
@@ -1058,7 +1129,7 @@ const App = {
       if (slot && !slot.innerHTML) {
         slot.innerHTML = `
           <div class="notify-banner">
-            <span>⚠️ 昨日（${yesterday.getMonth()+1}/${yesterday.getDate()}）の記録が未入力です</span>
+            <span>️ 昨日（${yesterday.getMonth()+1}/${yesterday.getDate()}）の記録が未入力です</span>
             <button onclick="App.goToYesterday()">入力する</button>
           </div>
         `;

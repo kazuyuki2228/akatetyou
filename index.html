@@ -4,6 +4,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>生活職場実態点検手帳</title>
+<!-- ===== PWA・ホーム画面追加対応 ===== -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="実態点検手帳">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#4a5d6c">
+<meta name="application-name" content="実態点検手帳">
+
+<!-- アイコン（SVG data URIで1ファイル完結） -->
+<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='36' fill='%234a5d6c'/><rect x='35' y='28' width='110' height='124' rx='8' fill='%23f4f1ec'/><rect x='35' y='28' width='14' height='124' rx='4' fill='%23a67c52'/><rect x='60' y='50' width='75' height='3' fill='%23a67c52'/><rect x='60' y='62' width='75' height='3' fill='%23a67c52'/><rect x='60' y='74' width='55' height='3' fill='%23a67c52'/><circle cx='130' cy='125' r='22' fill='%23a67c52'/><path d='M120 125 L127 132 L140 118' stroke='%23f4f1ec' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='36' fill='%234a5d6c'/><rect x='35' y='28' width='110' height='124' rx='8' fill='%23f4f1ec'/><rect x='35' y='28' width='14' height='124' rx='4' fill='%23a67c52'/><rect x='60' y='50' width='75' height='3' fill='%23a67c52'/><rect x='60' y='62' width='75' height='3' fill='%23a67c52'/><rect x='60' y='74' width='55' height='3' fill='%23a67c52'/><circle cx='130' cy='125' r='22' fill='%23a67c52'/><path d='M120 125 L127 132 L140 118' stroke='%23f4f1ec' stroke-width='4' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+
+<!-- manifest.json（任意・後述） -->
+<link rel="manifest" href="manifest.json">
 <style>
   :root {
     --bg: #f4f1ec;

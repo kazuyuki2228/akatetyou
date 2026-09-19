@@ -1399,6 +1399,118 @@ const App = {
 
 document.addEventListener('DOMContentLoaded', () => App.init());
 </script>
+// ===== 通知機能 =====
+const NOTIFICATION_TIME = '21:00'; // 通知する時刻（24時間表記）
 
+// Service WorkerをBlob URLでインライン登録
+function registerNotificationSW() {
+  if (!('serviceWorker' in navigator) || !('Notification' in window)) {
+    console.log('通知機能非対応');
+    return;
+  }
+
+  const swCode = `
+    let notificationTime = '21:00';
+    let lastNotifiedDate = '';
+
+    self.addEventListener('message', (event) => {
+      if (event.data.type === 'SET_TIME') {
+        notificationTime = event.data.time;
+      }
+    });
+
+    self.addEventListener('install', (event) => {
+      self.skipWaiting();
+    });
+
+    self.addEventListener('activate', (event) => {
+      event.waitUntil(self.clients.claim());
+    });
+
+    // 定期的にチェック（1分ごと）
+    self.addEventListener('activate', () => {
+      setInterval(() => {
+        const now = new Date();
+        const currentTime = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
+        const today = now.toISOString().slice(0,10);
+        
+        if (currentTime === notificationTime && lastNotifiedDate !== today) {
+          lastNotifiedDate = today;
+          self.registration.showNotification('📝 実態点検手帳', {
+            body: '今日の記録をつけましょう！',
+            icon: self.registration.scope + 'favicon.ico',
+            badge: self.registration.scope + 'favicon.ico',
+            tag: 'daily-reminder',
+            requireInteraction: false,
+            vibrate: [200, 100, 200]
+          });
+        }
+      }, 60000);
+    });
+  `;
+
+  const blob = new Blob([swCode], { type: 'application/javascript' });
+  const swUrl = URL.createObjectURL(blob);
+
+  navigator.serviceWorker.register(swUrl, { scope: './' })
+    .then(reg => {
+      console.log('Service Worker登録成功');
+      // 通知時刻をService Workerに送信
+      reg.active && reg.active.postMessage({ type: 'SET_TIME', time: NOTIFICATION_TIME });
+    })
+    .catch(err => console.log('Service Worker登録失敗:', err));
+}
+
+// 通知許可リクエスト
+async function requestNotificationPermission() {
+  if (!('Notification' in window)) return;
+  
+  if (Notification.permission === 'default') {
+    // 初回起動時に許可を求める
+    const permission = await Notification.requestPermission();
+    if (permission === 'granted') {
+      showToast('🔔 通知を有効にしました');
+      registerNotificationSW();
+    }
+  } else if (Notification.permission === 'granted') {
+    registerNotificationSW();
+  }
+}
+
+// 未入力チェック通知
+function checkUnsentDays() {
+  if (Notification.permission !== 'granted') return;
+  
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  
+  const yesterdayKey = `${yesterday.getFullYear()}-${String(yesterday.getMonth()+1).padStart(2,'0')}-${String(yesterday.getDate()).padStart(2,'0')}`;
+  
+  // 昨日が未入力の場合
+  if (!App.state.monthData.days[yesterdayKey]) {
+    // すでに今日の通知を送っていたらスキップ
+    const lastCheck = localStorage.getItem('lastUnsentCheck');
+    const todayStr = today.toISOString().slice(0,10);
+    if (lastCheck === todayStr) return;
+    
+    localStorage.setItem('lastUnsentCheck', todayStr);
+    
+    new Notification('📝 実態点検手帳', {
+      body: '昨日の記録が未入力です。つけ忘れではありませんか？',
+      tag: 'unsent-reminder',
+      vibrate: [200, 100, 200]
+    });
+  }
+}
+
+// 初期化
+document.addEventListener('DOMContentLoaded', () => {
+  // 既存のApp.init()の後に実行
+  setTimeout(() => {
+    requestNotificationPermission();
+    checkUnsentDays();
+  }, 2000);
+});
 </body>
 </html>

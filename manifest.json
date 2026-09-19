@@ -1,0 +1,17 @@
+{
+  "name": "生活職場実態点検手帳",
+  "short_name": "実態点検手帳",
+  "description": "組合員のための家計簿＆職場点検アプリ",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4f1ec",
+  "theme_color": "#4a5d6c",
+  "icons": [
+    {
+      "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='96' fill='%234a5d6c'/><rect x='100' y='80' width='312' height='352' rx='24' fill='%23f4f1ec'/><rect x='100' y='80' width='40' height='352' rx='12' fill='%23a67c52'/><rect x='170' y='140' width='210' height='10' fill='%23a67c52'/><rect x='170' y='175' width='210' height='10' fill='%23a67c52'/><rect x='170' y='210' width='150' height='10' fill='%23a67c52'/><circle cx='370' cy='355' r='60' fill='%23a67c52'/><path d='M340 355 L360 375 L400 330' stroke='%23f4f1ec' stroke-width='12' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

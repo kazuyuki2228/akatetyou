@@ -77,26 +77,27 @@
     align-items: center;
     gap: 6px;
   }
+  /* ヘルプアイコン */
   .help-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
     background: var(--accent-light);
-    color: var(--primary);
+    color: var(--primary-dark);
     border-radius: 50%;
-    font-size: 10px;
+    font-size: 11px;
     font-weight: bold;
     cursor: pointer;
     position: relative;
-    margin-left: 4px;
+    flex-shrink: 0;
   }
   .help-icon:active { background: var(--accent); color: #fff; }
   .help-tooltip {
     display: none;
     position: absolute;
-    bottom: 100%;
+    bottom: calc(100% + 8px);
     left: 50%;
     transform: translateX(-50%);
     background: var(--primary);
@@ -105,11 +106,12 @@
     border-radius: 6px;
     font-size: 11px;
     font-weight: normal;
-    width: 220px;
-    margin-bottom: 6px;
+    width: max-content;
+    max-width: 240px;
     z-index: 1000;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-    line-height: 1.4;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    line-height: 1.5;
+    pointer-events: none;
   }
   .help-tooltip.show { display: block; }
   .help-tooltip::after {
@@ -120,6 +122,25 @@
     transform: translateX(-50%);
     border: 6px solid transparent;
     border-top-color: var(--primary);
+  }
+  /* 画面端調整用クラス */
+  .help-tooltip.align-left {
+    left: 0;
+    transform: translateX(0);
+  }
+  .help-tooltip.align-left::after {
+    left: 9px;
+    transform: translateX(0);
+  }
+  .help-tooltip.align-right {
+    left: auto;
+    right: 0;
+    transform: translateX(0);
+  }
+  .help-tooltip.align-right::after {
+    left: auto;
+    right: 9px;
+    transform: translateX(0);
   }
   .date-nav {
     display: flex;
@@ -207,6 +228,18 @@
     padding: 6px 0;
     font-size: 14px;
   }
+  /* 分類説明 */
+  .category-desc {
+    font-size: 11px;
+    color: var(--text-light);
+    background: #f0ece4;
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-top: 4px;
+    display: none;
+    line-height: 1.4;
+  }
+  .category-desc.visible { display: block; }
   .health-options { display: flex; gap: 6px; margin-bottom: 8px; }
   .health-options button {
     flex: 1;
@@ -421,6 +454,7 @@
 </header>
 
 <main>
+  <!-- ホーム -->
   <section id="view-home" class="view">
     <div class="card">
       <div class="card-title">📊 今月のサマリー</div>
@@ -449,6 +483,7 @@
     </div>
   </section>
 
+  <!-- 記録 -->
   <section id="view-record" class="view">
     <div class="date-nav">
       <button id="prevDay">◀</button>
@@ -496,9 +531,9 @@
             <option value="特">特休</option>
           </select>
         </div>
-        <div><label>休憩（分） <span class="help-icon" data-help="break">?</span></label><input type="number" id="work-break" min="0" value="0"></div>
-        <div><label>残業（分） <span class="help-icon" data-help="overtime">?</span></label><input type="number" id="work-overtime" min="0" value="0"></div>
-        <div><label>不払い（分） <span class="help-icon" data-help="unpaid">?</span></label><input type="number" id="work-unpaid" min="0" value="0"></div>
+        <div><label>休憩（分） <span class="help-icon" data-help="break">?</span></label><input type="number" class="num-clear" id="work-break" min="0" value="0"></div>
+        <div><label>残業（分） <span class="help-icon" data-help="overtime">?</span></label><input type="number" class="num-clear" id="work-overtime" min="0" value="0"></div>
+        <div><label>不払い（分） <span class="help-icon" data-help="unpaid">?</span></label><input type="number" class="num-clear" id="work-unpaid" min="0" value="0"></div>
       </div>
     </div>
 
@@ -510,6 +545,7 @@
     <button class="save-btn" onclick="App.saveCurrentDay()">💾 この日の記録を保存</button>
   </section>
 
+  <!-- 集計 -->
   <section id="view-summary" class="view">
     <div class="card">
       <div class="card-title">💸 支出分類別集計</div>
@@ -532,7 +568,7 @@
         <div class="row"><span>支出計〔B〕</span><span id="calc-B">¥0</span></div>
         <div class="row"><span>今月の収支 (A-B)</span><span id="calc-balance">¥0</span></div>
         <div class="row" style="margin-top:8px;"><span>改善に必要な額〔C〕 <span class="help-icon" data-help="needed">?</span></span></div>
-        <input type="number" id="demand-needed" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:4px;text-align:right;font-size:14px;" value="0">
+        <input type="number" class="num-clear" id="demand-needed" style="width:100%;padding:8px;border:1px solid var(--border);border-radius:4px;text-align:right;font-size:14px;" value="0">
         <div class="row result"><span>要求額 (収支-C)</span><span id="calc-demand">¥0</span></div>
       </div>
     </div>
@@ -554,6 +590,7 @@
     </div>
   </section>
 
+  <!-- 点検 -->
   <section id="view-check" class="view">
     <div class="card">
       <div class="card-title">🔍 職場の点検</div>
@@ -582,15 +619,16 @@
     </div>
   </section>
 
+  <!-- 設定 -->
   <section id="view-settings" class="view">
     <div class="card">
       <div class="card-title">⚙️ 基本給等の設定 <span class="help-icon" data-help="settings">?</span></div>
-      <div class="setting-row"><label>基本賃金 <span class="help-icon" data-help="basic">?</span></label><input type="number" id="set-basic" value="0"></div>
-      <div class="setting-row"><label>地域手当 <span class="help-icon" data-help="regional">?</span></label><input type="number" id="set-regional" value="0"></div>
-      <div class="setting-row"><label>扶養手当</label><input type="number" id="set-dependent" value="0"></div>
-      <div class="setting-row"><label>児童手当</label><input type="number" id="set-child" value="0"></div>
-      <div class="setting-row"><label>住居手当</label><input type="number" id="set-housing" value="0"></div>
-      <div class="setting-row"><label>通勤手当</label><input type="number" id="set-commuting" value="0"></div>
+      <div class="setting-row"><label>基本賃金 <span class="help-icon" data-help="basic">?</span></label><input type="number" class="num-clear" id="set-basic" value="0"></div>
+      <div class="setting-row"><label>地域手当 <span class="help-icon" data-help="regional">?</span></label><input type="number" class="num-clear" id="set-regional" value="0"></div>
+      <div class="setting-row"><label>扶養手当</label><input type="number" class="num-clear" id="set-dependent" value="0"></div>
+      <div class="setting-row"><label>児童手当</label><input type="number" class="num-clear" id="set-child" value="0"></div>
+      <div class="setting-row"><label>住居手当</label><input type="number" class="num-clear" id="set-housing" value="0"></div>
+      <div class="setting-row"><label>通勤手当</label><input type="number" class="num-clear" id="set-commuting" value="0"></div>
       <div style="margin-top:10px;padding:10px;background:#fbf6ef;border-radius:6px;font-size:13px;">
         算出される時給単価 Ⓐ：<strong id="set-hourly">¥0</strong>
       </div>
@@ -631,10 +669,26 @@
 
 <script>
 const CATEGORIES = [
-  "社会保障費","税金","住居費","光熱水費","組合費","積立・貯金",
-  "通信費","ローン費","教育費","食費","衣料費","交通費",
-  "文化・教養・娯楽費","交際費","医療費","その他"
+  { value: "社会保障費", desc: "共済・社会保険等" },
+  { value: "税金", desc: "所得税・住民税等" },
+  { value: "住居費", desc: "家賃・住宅ローン・家具・家電等" },
+  { value: "光熱水費", desc: "水道・電気・ガス費等" },
+  { value: "組合費", desc: "労働組合費・職員組合費" },
+  { value: "積立・貯金", desc: "積立・貯金" },
+  { value: "通信費", desc: "電話料金・プロバイダ料金・切手代等" },
+  { value: "ローン費", desc: "親・兄弟からの借金、労金マイプラン等" },
+  { value: "教育費", desc: "保育園、幼稚園、塾の月謝・授業料等" },
+  { value: "食費", desc: "食事・おやつ・ジュース・晩酌の酒代等" },
+  { value: "衣料費", desc: "衣服・下着・靴・傘等" },
+  { value: "交通費", desc: "通勤費・車のローン・ガソリン代・車検代等" },
+  { value: "文化・教養・娯楽費", desc: "本・映画・音楽・スポーツ・趣味等" },
+  { value: "交際費", desc: "飲み会費・冠婚葬祭費・各種会費等" },
+  { value: "医療費", desc: "診療費・薬代等" },
+  { value: "その他", desc: "日用雑貨・嗜好品（タバコ等）・床屋代・クリーニング代・化粧品等" }
 ];
+const CATEGORY_NAMES = CATEGORIES.map(c => c.value);
+const CATEGORY_DESC_MAP = {};
+CATEGORIES.forEach(c => { CATEGORY_DESC_MAP[c.value] = c.desc; });
 
 const HELP_TEXTS = {
   expense: "1日の生活費を分類・内容・金額で記録します。月末に自動集計されます。",
@@ -665,10 +719,7 @@ const App = {
     currentDate: new Date(),
     year: new Date().getFullYear(),
     month: new Date().getMonth() + 1,
-    settings: {
-      basic: 0, regional: 0, dependent: 0,
-      child: 0, housing: 0, commuting: 0
-    },
+    settings: { basic: 0, regional: 0, dependent: 0, child: 0, housing: 0, commuting: 0 },
     monthData: null,
     autoSaveTimer: null,
     incomeInputsInitialized: false
@@ -683,9 +734,11 @@ const App = {
     this.setupHealthButtons();
     this.setupAutoSave();
     this.setupHelpIcons();
+    this.setupNumClear();
     this.render();
   },
 
+  // ===== データ読み書き =====
   loadSettings() {
     const raw = localStorage.getItem('techo_settings');
     if (raw) this.state.settings = JSON.parse(raw);
@@ -700,15 +753,12 @@ const App = {
       commuting: +document.getElementById('set-commuting').value || 0,
     };
     localStorage.setItem('techo_settings', JSON.stringify(this.state.settings));
-    
-    // 設定値を集計画面の収入欄に反映
     this.state.monthData.income.basic = this.state.settings.basic;
     this.state.monthData.income.dependent = this.state.settings.dependent;
     this.state.monthData.income.child = this.state.settings.child;
     this.state.monthData.income.housing = this.state.settings.housing;
     this.state.monthData.income.commuting = this.state.settings.commuting;
     this.saveMonthData();
-    
     this.toast('設定を保存しました');
     this.render();
   },
@@ -725,23 +775,13 @@ const App = {
     if (!this.state.monthData.income) this.state.monthData.income = {};
     if (!this.state.monthData.days) this.state.monthData.days = {};
     if (!this.state.monthData.check) this.state.monthData.check = {};
-    
-    // 設定値を収入欄に反映（初回のみ）
-    if (!this.state.monthData.income.basic && this.state.settings.basic) {
-      this.state.monthData.income.basic = this.state.settings.basic;
-    }
-    if (!this.state.monthData.income.dependent && this.state.settings.dependent) {
-      this.state.monthData.income.dependent = this.state.settings.dependent;
-    }
-    if (!this.state.monthData.income.child && this.state.settings.child) {
-      this.state.monthData.income.child = this.state.settings.child;
-    }
-    if (!this.state.monthData.income.housing && this.state.settings.housing) {
-      this.state.monthData.income.housing = this.state.settings.housing;
-    }
-    if (!this.state.monthData.income.commuting && this.state.settings.commuting) {
-      this.state.monthData.income.commuting = this.state.settings.commuting;
-    }
+    const s = this.state.settings;
+    const inc = this.state.monthData.income;
+    if (!inc.basic && s.basic) inc.basic = s.basic;
+    if (!inc.dependent && s.dependent) inc.dependent = s.dependent;
+    if (!inc.child && s.child) inc.child = s.child;
+    if (!inc.housing && s.housing) inc.housing = s.housing;
+    if (!inc.commuting && s.commuting) inc.commuting = s.commuting;
   },
   saveMonthData() {
     localStorage.setItem(this.monthKey(), JSON.stringify(this.state.monthData));
@@ -763,6 +803,7 @@ const App = {
     return this.state.monthData.days[key];
   },
 
+  // ===== ナビゲーション =====
   setupTabs() {
     document.querySelectorAll('#tabbar button').forEach(btn => {
       btn.addEventListener('click', () => {
@@ -777,15 +818,13 @@ const App = {
       this.state.month--;
       if (this.state.month < 1) { this.state.month = 12; this.state.year--; }
       this.state.incomeInputsInitialized = false;
-      this.loadMonthData();
-      this.render();
+      this.loadMonthData(); this.render();
     };
     document.getElementById('nextMonth').onclick = () => {
       this.state.month++;
       if (this.state.month > 12) { this.state.month = 1; this.state.year++; }
       this.state.incomeInputsInitialized = false;
-      this.loadMonthData();
-      this.render();
+      this.loadMonthData(); this.render();
     };
   },
   setupDayNav() {
@@ -814,26 +853,6 @@ const App = {
       }
     });
   },
-  setupHelpIcons() {
-    document.addEventListener('click', (e) => {
-      const icon = e.target.closest('.help-icon');
-      if (icon) {
-        e.stopPropagation();
-        const key = icon.dataset.help;
-        const tooltip = icon.querySelector('.help-tooltip');
-        if (tooltip) {
-          tooltip.classList.toggle('show');
-        } else {
-          const tip = document.createElement('div');
-          tip.className = 'help-tooltip show';
-          tip.textContent = HELP_TEXTS[key] || '説明はありません';
-          icon.appendChild(tip);
-        }
-      } else {
-        document.querySelectorAll('.help-tooltip.show').forEach(t => t.classList.remove('show'));
-      }
-    });
-  },
   triggerAutoSave() {
     clearTimeout(this.state.autoSaveTimer);
     this.state.autoSaveTimer = setTimeout(() => {
@@ -842,15 +861,87 @@ const App = {
     }, 1500);
   },
 
+  // ===== ヘルプアイコン（吹き出し） =====
+  setupHelpIcons() {
+    document.addEventListener('click', (e) => {
+      const icon = e.target.closest('.help-icon');
+      // まず全ての吹き出しを閉じる
+      document.querySelectorAll('.help-tooltip.show').forEach(t => {
+        t.classList.remove('show');
+        t.classList.remove('align-left', 'align-right');
+      });
+      if (icon) {
+        e.stopPropagation();
+        const key = icon.dataset.help;
+        let tooltip = icon.querySelector('.help-tooltip');
+        if (!tooltip) {
+          tooltip = document.createElement('div');
+          tooltip.className = 'help-tooltip';
+          tooltip.textContent = HELP_TEXTS[key] || '説明はありません';
+          icon.appendChild(tooltip);
+        }
+        // 表示して位置を計算
+        tooltip.classList.add('show');
+        this.adjustTooltipPosition(tooltip, icon);
+      }
+    });
+  },
+  adjustTooltipPosition(tooltip, icon) {
+    // 一旦リセット
+    tooltip.classList.remove('align-left', 'align-right');
+    tooltip.style.left = '';
+    tooltip.style.right = '';
+    tooltip.style.transform = '';
+
+    // 表示後にrectを取得
+    requestAnimationFrame(() => {
+      const rect = tooltip.getBoundingClientRect();
+      const margin = 8;
+
+      if (rect.left < margin) {
+        // 左にはみ出し → 左寄せ
+        tooltip.classList.add('align-left');
+      } else if (rect.right > window.innerWidth - margin) {
+        // 右にはみ出し → 右寄せ
+        tooltip.classList.add('align-right');
+      }
+    });
+  },
+
+  // ===== 数値入力の0自動クリア =====
+  setupNumClear() {
+    document.addEventListener('focusin', (e) => {
+      if (e.target.matches('.num-clear') || e.target.matches('input[type="number"]')) {
+        if (e.target.value === '0') {
+          e.target.value = '';
+        }
+      }
+    });
+    document.addEventListener('focusout', (e) => {
+      if (e.target.matches('.num-clear') || e.target.matches('input[type="number"]')) {
+        if (e.target.value === '' || e.target.value === '-') {
+          e.target.value = '0';
+          // 集計画面の収入欄ならデータも更新
+          if (e.target.dataset.income) {
+            this.state.monthData.income[e.target.dataset.income] = 0;
+            this.saveMonthData();
+            this.updateSummaryCalculations();
+          }
+        }
+      }
+    });
+  },
+
+  // ===== 記録画面 =====
   renderRecord() {
     const d = this.state.currentDate;
     const weekdays = ['日','月','火','水','木','金','土'];
     const isToday = this.dateKey(d) === this.dateKey(new Date());
     const label = `${d.getMonth()+1}/${d.getDate()}(${weekdays[d.getDay()]})`;
     document.getElementById('currentDateLabel').innerHTML = label + (isToday ? '<span class="today-badge">今日</span>' : '');
-
     const data = this.getDayData();
 
+    // 生活費
     const expEl = document.getElementById('expense-lines');
     expEl.innerHTML = '';
     (data.expenses.length ? data.expenses : [{category:'',content:'',amount:0}]).forEach((e, i) => {
@@ -858,6 +949,7 @@ const App = {
     });
     this.updateExpenseTotal();
 
+    // ガマン
     const savEl = document.getElementById('saving-lines');
     savEl.innerHTML = '';
     (data.savings.length ? data.savings : [{content:'',amount:0}]).forEach((s, i) => {
@@ -865,11 +957,13 @@ const App = {
     });
     this.updateSavingTotal();
 
+    // 体調
     document.querySelectorAll('#health-options button').forEach(b => {
       b.classList.toggle('selected', b.dataset.val === data.health.status);
     });
     document.getElementById('health-detail').value = data.health.detail || '';
 
+    // 勤怠
     document.getElementById('work-start').value = data.work.start || '';
     document.getElementById('work-end').value = data.work.end || '';
     document.getElementById('work-leave').value = data.work.leave || 'なし';
@@ -877,26 +971,52 @@ const App = {
     document.getElementById('work-overtime').value = data.work.overtime || 0;
     document.getElementById('work-unpaid').value = data.work.unpaid || 0;
 
+    // 振り返り
     document.getElementById('reflection').value = data.reflection || '';
   },
 
   createExpenseLine(e, idx) {
+    const wrapper = document.createElement('div');
+    wrapper.style.marginBottom = '4px';
+
     const div = document.createElement('div');
     div.className = 'line-item expense';
     div.innerHTML = `
       <select data-idx="${idx}" data-field="category">
         <option value="">分類</option>
-        ${CATEGORIES.map(c => `<option value="${c}" ${c===e.category?'selected':''}>${c}</option>`).join('')}
+        ${CATEGORIES.map(c => `<option value="${c.value}" ${c.value===e.category?'selected':''}>${c.value}</option>`).join('')}
       </select>
       <input type="text" placeholder="内容" value="${this.escapeHtml(e.content||'')}" data-idx="${idx}" data-field="content">
-      <input type="number" placeholder="金額" value="${e.amount||''}" data-idx="${idx}" data-field="amount">
+      <input type="number" class="num-clear" placeholder="金額" value="${e.amount||''}" data-idx="${idx}" data-field="amount">
       <button class="remove-btn" data-idx="${idx}">×</button>
     `;
-    div.querySelectorAll('input,select').forEach(el => {
+    wrapper.appendChild(div);
+
+    // 分類説明
+    const descEl = document.createElement('div');
+    descEl.className = 'category-desc';
+    if (e.category && CATEGORY_DESC_MAP[e.category]) {
+      descEl.textContent = '💡 ' + CATEGORY_DESC_MAP[e.category];
+      descEl.classList.add('visible');
+    }
+    wrapper.appendChild(descEl);
+
+    // イベント
+    const sel = div.querySelector('select');
+    sel.addEventListener('change', () => {
+      this.updateExpenseLine(idx, 'category', sel.value);
+      if (sel.value && CATEGORY_DESC_MAP[sel.value]) {
+        descEl.textContent = '💡 ' + CATEGORY_DESC_MAP[sel.value];
+        descEl.classList.add('visible');
+      } else {
+        descEl.classList.remove('visible');
+      }
+    });
+    div.querySelectorAll('input').forEach(el => {
       el.addEventListener('input', () => this.updateExpenseLine(idx, el.dataset.field, el.value));
     });
     div.querySelector('.remove-btn').onclick = () => this.removeExpenseLine(idx);
-    return div;
+    return wrapper;
   },
   addExpenseLine() {
     this.getDayData().expenses.push({category:'',content:'',amount:0});
@@ -924,7 +1044,7 @@ const App = {
     div.className = 'line-item saving';
     div.innerHTML = `
       <input type="text" placeholder="内容" value="${this.escapeHtml(s.content||'')}" data-idx="${idx}" data-field="content">
-      <input type="number" placeholder="金額" value="${s.amount||''}" data-idx="${idx}" data-field="amount">
+      <input type="number" class="num-clear" placeholder="金額" value="${s.amount||''}" data-idx="${idx}" data-field="amount">
       <button class="remove-btn" data-idx="${idx}">×</button>
     `;
     div.querySelectorAll('input').forEach(el => {
@@ -971,6 +1091,7 @@ const App = {
     this.toast('✅ 保存しました');
   },
 
+  // ===== ホーム =====
   renderHome() {
     const md = this.state.monthData;
     const income = this.calcIncome();
@@ -990,15 +1111,12 @@ const App = {
       const key = `${this.state.year}-${String(this.state.month).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
       if (md.days[key]) inputDays++;
     }
-
     document.getElementById('sum-income').textContent = '¥' + income.toLocaleString();
     document.getElementById('sum-expense').textContent = '¥' + expenseTotal.toLocaleString();
     const balance = income - expenseTotal;
     document.getElementById('sum-balance').textContent = (balance>=0?'+':'') + '¥' + balance.toLocaleString();
     const needed = +md.income.demandNeeded || 0;
-    const demand = balance - needed;
-    document.getElementById('sum-demand').textContent = '¥' + demand.toLocaleString();
-
+    document.getElementById('sum-demand').textContent = '¥' + (balance - needed).toLocaleString();
     document.getElementById('input-status').innerHTML = `${maxDay}日中 ${inputDays}日入力済み`;
     document.getElementById('progress-fill').style.width = (inputDays/maxDay*100) + '%';
     document.getElementById('sum-saving').textContent = '¥' + savingTotal.toLocaleString();
@@ -1006,6 +1124,7 @@ const App = {
     document.getElementById('sum-unpaid').textContent = this.fmtDuration(upTotal);
   },
 
+  // ===== 集計 =====
   renderSummary() {
     const md = this.state.monthData;
     const byCategory = this.calcExpenseByCategory();
@@ -1013,11 +1132,11 @@ const App = {
     tbody.innerHTML = '';
     let total = 0;
     CATEGORIES.forEach(cat => {
-      const amt = byCategory[cat] || 0;
+      const amt = byCategory[cat.value] || 0;
       total += amt;
       if (amt > 0) {
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${cat}</td><td class="amount">¥${amt.toLocaleString()}</td>`;
+        tr.innerHTML = `<td>${cat.value}</td><td class="amount">¥${amt.toLocaleString()}</td>`;
         tbody.appendChild(tr);
       }
     });
@@ -1026,7 +1145,7 @@ const App = {
     trTotal.innerHTML = `<td>合計〔B〕</td><td class="amount">¥${total.toLocaleString()}</td>`;
     tbody.appendChild(trTotal);
 
-    // 収入欄のDOMを初回のみ構築
+    // 収入欄（初回のみDOM構築）
     if (!this.state.incomeInputsInitialized) {
       const incEl = document.getElementById('income-settings');
       const incomeFields = [
@@ -1036,11 +1155,11 @@ const App = {
       incEl.innerHTML = incomeFields.map(([k,l]) => `
         <div class="setting-row">
           <label>${l}</label>
-          <input type="number" data-income="${k}" value="${md.income[k]||this.state.settings[k]||0}">
+          <input type="number" class="num-clear" data-income="${k}" value="${md.income[k]||this.state.settings[k]||0}">
         </div>
       `).join('') + `
-        <div class="setting-row"><label>超勤手当</label><input type="number" data-income="overtime" value="${md.income.overtime||0}"></div>
-        <div class="setting-row"><label>その他収入</label><input type="number" data-income="other" value="${md.income.other||0}"></div>
+        <div class="setting-row"><label>超勤手当</label><input type="number" class="num-clear" data-income="overtime" value="${md.income.overtime||0}"></div>
+        <div class="setting-row"><label>その他収入</label><input type="number" class="num-clear" data-income="other" value="${md.income.other||0}"></div>
       `;
       incEl.querySelectorAll('input').forEach(inp => {
         inp.addEventListener('input', () => {
@@ -1051,11 +1170,10 @@ const App = {
       });
       this.state.incomeInputsInitialized = true;
     } else {
-      // 2回目以降は値のみ更新
       const incEl = document.getElementById('income-settings');
       incEl.querySelectorAll('input').forEach(inp => {
         const key = inp.dataset.income;
-        if (key !== document.activeElement.dataset.income) {
+        if (document.activeElement !== inp) {
           inp.value = md.income[key] || 0;
         }
       });
@@ -1063,6 +1181,7 @@ const App = {
 
     this.updateSummaryCalculations();
 
+    // 休暇
     const leaveCount = {};
     Object.values(md.days).forEach(d => {
       const lv = d.work.leave;
@@ -1072,7 +1191,7 @@ const App = {
     if (Object.keys(leaveCount).length === 0) {
       leaveEl.innerHTML = '<p style="color:var(--text-light);font-size:13px;">今月の休暇取得はありません</p>';
     } else {
-      leaveEl.innerHTML = Object.entries(leaveCount).map(([k,v]) => 
+      leaveEl.innerHTML = Object.entries(leaveCount).map(([k,v]) =>
         `<div style="display:flex;justify-content:space-between;padding:4px 0;"><span>${k}</span><strong>${v}日</strong></div>`
       ).join('');
     }
@@ -1083,14 +1202,11 @@ const App = {
     const income = this.calcIncome();
     const byCategory = this.calcExpenseByCategory();
     const total = Object.values(byCategory).reduce((s,v)=>s+v,0);
-
     document.getElementById('income-total').textContent = '¥' + income.toLocaleString();
-
     const balance = income - total;
     document.getElementById('calc-A').textContent = '¥' + income.toLocaleString();
     document.getElementById('calc-B').textContent = '¥' + total.toLocaleString();
     document.getElementById('calc-balance').textContent = (balance>=0?'+':'') + '¥' + balance.toLocaleString();
-    
     const neededInput = document.getElementById('demand-needed');
     if (document.activeElement !== neededInput) {
       neededInput.value = md.income.demandNeeded || 0;
@@ -1119,6 +1235,7 @@ const App = {
     document.getElementById('calc-up-amount').textContent = '¥' + Math.round(upAmount).toLocaleString();
   },
 
+  // ===== 点検 =====
   renderCheck() {
     const c = this.state.monthData.check;
     ['health','env','work','right','other'].forEach(k => {
@@ -1134,6 +1251,7 @@ const App = {
     this.toast('✅ 点検内容を保存しました');
   },
 
+  // ===== 設定 =====
   renderSettings() {
     const s = this.state.settings;
     document.getElementById('set-basic').value = s.basic || 0;
@@ -1146,6 +1264,7 @@ const App = {
     document.getElementById('set-hourly').textContent = '¥' + hourly.toFixed(1);
   },
 
+  // ===== ユーティリティ =====
   calcIncome() {
     const inc = this.state.monthData.income;
     return (inc.basic||0) + (inc.dependent||0) + (inc.child||0) +
@@ -1184,6 +1303,7 @@ const App = {
     setTimeout(() => t.classList.remove('show'), 2000);
   },
 
+  // ===== データ入出力 =====
   exportCSV() {
     const md = this.state.monthData;
     let csv = '日付,分類,内容,金額\n';
@@ -1242,11 +1362,11 @@ const App = {
     this.toast('今月のデータを削除しました');
   },
 
+  // ===== 全体描画 =====
   render() {
     document.getElementById('currentMonthLabel').textContent = `${this.state.year}年 ${this.state.month}月`;
     document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
     document.getElementById('view-' + this.state.currentView).classList.add('active');
-
     if (this.state.currentView === 'home') this.renderHome();
     if (this.state.currentView === 'record') this.renderRecord();
     if (this.state.currentView === 'summary') this.renderSummary();

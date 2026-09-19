@@ -4,13 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>生活職場実態点検手帳</title>
-<!-- ===== PWA・ホーム画面追加対応 ===== -->
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="実態点検手帳">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="theme-color" content="#4a5d6c">
-<meta name="application-name" content="実態点検手帳">
 
 <!-- ===== PWA・ホーム画面追加対応 ===== -->
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -23,9 +16,8 @@
 <!-- アイコン（春闘勝利の赤い手帳） -->
 <link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='36' fill='%23c0392b'/><rect x='20' y='20' width='20' height='140' rx='4' fill='%23922b21'/><rect x='40' y='20' width='120' height='140' rx='4' fill='%23f5f5f5'/><text x='100' y='85' font-family='sans-serif' font-size='24' font-weight='bold' fill='%23c0392b' text-anchor='middle'>春闘</text><text x='100' y='115' font-family='sans-serif' font-size='24' font-weight='bold' fill='%23c0392b' text-anchor='middle'>勝利</text><rect x='60' y='130' width='80' height='3' fill='%23c0392b'/></svg>">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='36' fill='%23c0392b'/><rect x='20' y='20' width='20' height='140' rx='4' fill='%23922b21'/><rect x='40' y='20' width='120' height='140' rx='4' fill='%23f5f5f5'/><text x='100' y='85' font-family='sans-serif' font-size='24' font-weight='bold' fill='%23c0392b' text-anchor='middle'>春闘</text><text x='100' y='115' font-family='sans-serif' font-size='24' font-weight='bold' fill='%23c0392b' text-anchor='middle'>勝利</text><rect x='60' y='130' width='80' height='3' fill='%23c0392b'/></svg>">
-
-<!-- manifest.json -->
 <link rel="manifest" href="manifest.json">
+
 <style>
   :root {
     --bg: #f4f1ec;
@@ -39,6 +31,7 @@
     --border: #d8d2c4;
     --danger: #b44a4a;
     --success: #5a7a5a;
+    --spring: #c0392b;
     --shadow: 0 1px 3px rgba(0,0,0,0.08);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -51,7 +44,7 @@
     padding-bottom: 70px;
   }
   header {
-    background: var(--primary);
+    background: var(--spring);
     color: #fff;
     padding: 12px 16px;
     position: sticky;
@@ -145,7 +138,6 @@
     border: 6px solid transparent;
     border-top-color: var(--primary);
   }
-  /* 画面端調整用クラス */
   .help-tooltip.align-left {
     left: 0;
     transform: translateX(0);
@@ -176,7 +168,7 @@
     border: 1px solid var(--border);
   }
   .date-nav button {
-    background: var(--primary);
+    background: var(--spring);
     color: #fff;
     border: none;
     width: 36px;
@@ -185,7 +177,7 @@
     font-size: 16px;
     cursor: pointer;
   }
-  .date-nav button:active { background: var(--primary-dark); }
+  .date-nav button:active { background: #922b21; }
   .date-nav .current-date {
     font-size: 15px;
     font-weight: 600;
@@ -193,7 +185,7 @@
   }
   .date-nav .today-badge {
     display: inline-block;
-    background: var(--accent);
+    background: var(--spring);
     color: #fff;
     font-size: 10px;
     padding: 2px 6px;
@@ -250,7 +242,6 @@
     padding: 6px 0;
     font-size: 14px;
   }
-  /* 分類説明 */
   .category-desc {
     font-size: 11px;
     color: var(--text-light);
@@ -274,9 +265,9 @@
     color: var(--text);
   }
   .health-options button.selected {
-    background: var(--primary);
+    background: var(--spring);
     color: #fff;
-    border-color: var(--primary);
+    border-color: var(--spring);
   }
   .work-grid {
     display: grid;
@@ -315,7 +306,7 @@
     bottom: 70px;
     left: 50%;
     transform: translateX(-50%);
-    background: var(--accent);
+    background: var(--spring);
     color: #fff;
     border: none;
     padding: 12px 32px;
@@ -323,12 +314,12 @@
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
-    box-shadow: 0 3px 10px rgba(166,124,82,0.4);
+    box-shadow: 0 3px 10px rgba(192,57,43,0.4);
     z-index: 50;
     width: calc(100% - 24px);
     max-width: 576px;
   }
-  .save-btn:active { background: #8a6540; }
+  .save-btn:active { background: #922b21; }
   nav#tabbar {
     position: fixed;
     bottom: 0;
@@ -354,7 +345,7 @@
     gap: 2px;
   }
   nav#tabbar button .icon { font-size: 20px; }
-  nav#tabbar button.active { color: var(--primary); font-weight: 600; }
+  nav#tabbar button.active { color: var(--spring); font-weight: 600; }
   .summary-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -368,8 +359,8 @@
   }
   .summary-item .label { font-size: 11px; color: var(--text-light); }
   .summary-item .value { font-size: 16px; font-weight: 600; color: var(--primary); margin-top: 2px; }
-  .summary-item.highlight { border-left-color: var(--accent); background: #fbf6ef; }
-  .summary-item.highlight .value { color: var(--accent); }
+  .summary-item.highlight { border-left-color: var(--spring); background: #fdf2f0; }
+  .summary-item.highlight .value { color: var(--spring); }
   .progress-bar {
     background: #e8e2d4;
     height: 8px;
@@ -378,7 +369,7 @@
     margin-top: 6px;
   }
   .progress-bar .fill {
-    background: var(--accent);
+    background: var(--spring);
     height: 100%;
     transition: width 0.3s;
   }
@@ -409,7 +400,7 @@
     margin-top: 6px;
     padding-top: 8px;
     font-weight: 600;
-    color: var(--accent);
+    color: var(--spring);
     font-size: 15px;
   }
   .check-item { margin-bottom: 14px; }
@@ -433,7 +424,7 @@
     font-size: 13px;
   }
   .btn {
-    background: var(--primary);
+    background: var(--spring);
     color: #fff;
     border: none;
     padding: 10px 16px;
@@ -462,6 +453,30 @@
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   }
   #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  /* 通知バナー */
+  .notify-banner {
+    background: #fdf2f0;
+    border: 1px solid var(--spring);
+    color: var(--spring);
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+  }
+  .notify-banner button {
+    background: var(--spring);
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+    white-space: nowrap;
+  }
 </style>
 </head>
 <body>
@@ -478,6 +493,7 @@
 <main>
   <!-- ホーム -->
   <section id="view-home" class="view">
+    <div id="notify-banner-slot"></div>
     <div class="card">
       <div class="card-title">📊 今月のサマリー</div>
       <div class="summary-grid">
@@ -494,7 +510,7 @@
     </div>
     <div class="card">
       <div class="card-title">😣 今月のガマン合計</div>
-      <div class="value" id="sum-saving" style="font-size:18px;color:var(--accent);font-weight:600;">¥0</div>
+      <div class="value" id="sum-saving" style="font-size:18px;color:var(--spring);font-weight:600;">¥0</div>
     </div>
     <div class="card">
       <div class="card-title">⏰ 残業・不払い合計</div>
@@ -644,6 +660,20 @@
   <!-- 設定 -->
   <section id="view-settings" class="view">
     <div class="card">
+      <div class="card-title">🔔 通知設定 <span class="help-icon" data-help="notification">?</span></div>
+      <div id="notify-status" style="font-size:12px;color:var(--text-light);margin-bottom:8px;"></div>
+      <div class="setting-row">
+        <label>毎日通知する時刻</label>
+        <input type="time" id="notify-time" value="21:00" style="width:auto;">
+      </div>
+      <button class="btn" onclick="App.setupNotification()">通知を設定する</button>
+      <p style="font-size:11px;color:var(--text-light);margin-top:8px;">
+        ※iOSはSafariから「ホームに追加」したアプリのみ通知対応<br>
+        ※Android Chromeはバックグラウンド通知に対応
+      </p>
+    </div>
+
+    <div class="card">
       <div class="card-title">⚙️ 基本給等の設定 <span class="help-icon" data-help="settings">?</span></div>
       <div class="setting-row"><label>基本賃金 <span class="help-icon" data-help="basic">?</span></label><input type="number" class="num-clear" id="set-basic" value="0"></div>
       <div class="setting-row"><label>地域手当 <span class="help-icon" data-help="regional">?</span></label><input type="number" class="num-clear" id="set-regional" value="0"></div>
@@ -656,17 +686,6 @@
       </div>
       <button class="btn" onclick="App.saveSettings()">設定を保存</button>
     </div>
-<div class="card">
-  <div class="card-title">🔔 通知設定</div>
-  <div class="setting-row">
-    <label>毎日通知 <span class="help-icon" data-help="notification">?</span></label>
-    <input type="time" id="notify-time" value="21:00" style="width:auto;">
-  </div>
-  <button class="btn" onclick="App.updateNotification()">通知設定を保存</button>
-  <p style="font-size:11px;color:var(--text-light);margin-top:8px;">
-    ※通知を許可していない場合は、ブラウザの設定から許可してください
-  </p>
-</div>
 
     <div class="card">
       <div class="card-title">📤 データ管理</div>
@@ -719,7 +738,6 @@ const CATEGORIES = [
   { value: "医療費", desc: "診療費・薬代等" },
   { value: "その他", desc: "日用雑貨・嗜好品（タバコ等）・床屋代・クリーニング代・化粧品等" }
 ];
-const CATEGORY_NAMES = CATEGORIES.map(c => c.value);
 const CATEGORY_DESC_MAP = {};
 CATEGORIES.forEach(c => { CATEGORY_DESC_MAP[c.value] = c.desc; });
 
@@ -743,7 +761,8 @@ const HELP_TEXTS = {
   "check-other": "臨時職員が退職を強要されていた等、職場でおかしいと思うことを記録します。",
   settings: "基本給等の設定は、集計画面の時給計算に使用されます。",
   basic: "給与明細の基本給を記入します。時給計算のベースになります。",
-  regional: "地域手当（地域による生活費の差を補填する手当）を記入します。"
+  regional: "地域手当（地域による生活費の差を補填する手当）を記入します。",
+  notification: "毎日決まった時間に「記録をつけましょう」通知が届きます。デフォルトは21時です。"
 };
 
 const App = {
@@ -769,6 +788,8 @@ const App = {
     this.setupHelpIcons();
     this.setupNumClear();
     this.render();
+    // 通知関連の初期化
+    this.initNotification();
   },
 
   // ===== データ読み書き =====
@@ -898,7 +919,6 @@ const App = {
   setupHelpIcons() {
     document.addEventListener('click', (e) => {
       const icon = e.target.closest('.help-icon');
-      // まず全ての吹き出しを閉じる
       document.querySelectorAll('.help-tooltip.show').forEach(t => {
         t.classList.remove('show');
         t.classList.remove('align-left', 'align-right');
@@ -913,29 +933,22 @@ const App = {
           tooltip.textContent = HELP_TEXTS[key] || '説明はありません';
           icon.appendChild(tooltip);
         }
-        // 表示して位置を計算
         tooltip.classList.add('show');
         this.adjustTooltipPosition(tooltip, icon);
       }
     });
   },
   adjustTooltipPosition(tooltip, icon) {
-    // 一旦リセット
     tooltip.classList.remove('align-left', 'align-right');
     tooltip.style.left = '';
     tooltip.style.right = '';
     tooltip.style.transform = '';
-
-    // 表示後にrectを取得
     requestAnimationFrame(() => {
       const rect = tooltip.getBoundingClientRect();
       const margin = 8;
-
       if (rect.left < margin) {
-        // 左にはみ出し → 左寄せ
         tooltip.classList.add('align-left');
       } else if (rect.right > window.innerWidth - margin) {
-        // 右にはみ出し → 右寄せ
         tooltip.classList.add('align-right');
       }
     });
@@ -954,7 +967,6 @@ const App = {
       if (e.target.matches('.num-clear') || e.target.matches('input[type="number"]')) {
         if (e.target.value === '' || e.target.value === '-') {
           e.target.value = '0';
-          // 集計画面の収入欄ならデータも更新
           if (e.target.dataset.income) {
             this.state.monthData.income[e.target.dataset.income] = 0;
             this.saveMonthData();
@@ -963,6 +975,109 @@ const App = {
         }
       }
     });
+  },
+
+  // ===== 通知機能 =====
+  initNotification() {
+    if (!('Notification' in window)) return;
+    // 通知ステータス表示の更新
+    this.updateNotifyStatus();
+    // 昨日が未入力ならアラート表示
+    this.checkYesterdayUnsaved();
+  },
+  updateNotifyStatus() {
+    const el = document.getElementById('notify-status');
+    if (!el) return;
+    if (!('Notification' in window)) {
+      el.textContent = '⚠️ このブラウザは通知に対応していません';
+      return;
+    }
+    const perm = Notification.permission;
+    if (perm === 'granted') {
+      const time = localStorage.getItem('notify_time') || '21:00';
+      el.innerHTML = `✅ 通知は許可されています（毎日 ${time} に通知）`;
+      document.getElementById('notify-time').value = time;
+    } else if (perm === 'denied') {
+      el.textContent = '❌ 通知がブロックされています。ブラウザの設定から変更してください';
+    } else {
+      el.textContent = '⚪ まだ通知が許可されていません。下のボタンから設定できます';
+    }
+  },
+  async setupNotification() {
+    if (!('Notification' in window)) {
+      this.toast('⚠️ このブラウザは通知に対応していません');
+      return;
+    }
+    const time = document.getElementById('notify-time').value || '21:00';
+    localStorage.setItem('notify_time', time);
+
+    // Service Worker登録
+    if ('serviceWorker' in navigator) {
+      try {
+        const reg = await navigator.serviceWorker.register('./sw.js', { scope: './' });
+        // Service Workerに通知時刻を伝える
+        reg.active && reg.active.postMessage({ type: 'SET_TIME', time: time });
+        this.toast('✅ Service Workerを登録しました');
+      } catch (err) {
+        console.error('SW登録失敗:', err);
+        this.toast('⚠️ Service Worker登録に失敗');
+      }
+    }
+
+    // 通知許可リクエスト
+    if (Notification.permission === 'granted') {
+      this.toast('✅ 通知設定を保存しました');
+      this.updateNotifyStatus();
+      return;
+    }
+    const perm = await Notification.requestPermission();
+    if (perm === 'granted') {
+      this.toast('🔔 通知を有効にしました');
+      // テスト通知
+      new Notification('📝 春闘手帳', {
+        body: `毎日${time}に記録のお知らせが届きます`,
+        tag: 'test-notification'
+      });
+    } else {
+      this.toast('⚠️ 通知が許可されませんでした');
+    }
+    this.updateNotifyStatus();
+  },
+  checkYesterdayUnsaved() {
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yKey = this.dateKey(yesterday);
+    const monthKeyOfYesterday = `techo_data_${yesterday.getFullYear()}-${String(yesterday.getMonth()+1).padStart(2,'0')}`;
+    const raw = localStorage.getItem(monthKeyOfYesterday);
+    if (!raw) return;
+    const md = JSON.parse(raw);
+    if (!md.days || !md.days[yKey]) {
+      // 昨日が未入力 → ホームにバナー表示
+      const slot = document.getElementById('notify-banner-slot');
+      if (slot && !slot.innerHTML) {
+        slot.innerHTML = `
+          <div class="notify-banner">
+            <span>⚠️ 昨日（${yesterday.getMonth()+1}/${yesterday.getDate()}）の記録が未入力です</span>
+            <button onclick="App.goToYesterday()">入力する</button>
+          </div>
+        `;
+      }
+    }
+  },
+  goToYesterday() {
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    this.state.currentDate = yesterday;
+    this.state.year = yesterday.getFullYear();
+    this.state.month = yesterday.getMonth() + 1;
+    this.state.currentView = 'record';
+    this.loadMonthData();
+    document.querySelectorAll('#tabbar button').forEach(b => {
+      b.classList.toggle('active', b.dataset.view === 'record');
+    });
+    this.render();
   },
 
   // ===== 記録画面 =====
@@ -974,7 +1089,6 @@ const App = {
     document.getElementById('currentDateLabel').innerHTML = label + (isToday ? '<span class="today-badge">今日</span>' : '');
     const data = this.getDayData();
 
-    // 生活費
     const expEl = document.getElementById('expense-lines');
     expEl.innerHTML = '';
     (data.expenses.length ? data.expenses : [{category:'',content:'',amount:0}]).forEach((e, i) => {
@@ -982,7 +1096,6 @@ const App = {
     });
     this.updateExpenseTotal();
 
-    // ガマン
     const savEl = document.getElementById('saving-lines');
     savEl.innerHTML = '';
     (data.savings.length ? data.savings : [{content:'',amount:0}]).forEach((s, i) => {
@@ -990,13 +1103,11 @@ const App = {
     });
     this.updateSavingTotal();
 
-    // 体調
     document.querySelectorAll('#health-options button').forEach(b => {
       b.classList.toggle('selected', b.dataset.val === data.health.status);
     });
     document.getElementById('health-detail').value = data.health.detail || '';
 
-    // 勤怠
     document.getElementById('work-start').value = data.work.start || '';
     document.getElementById('work-end').value = data.work.end || '';
     document.getElementById('work-leave').value = data.work.leave || 'なし';
@@ -1004,14 +1115,12 @@ const App = {
     document.getElementById('work-overtime').value = data.work.overtime || 0;
     document.getElementById('work-unpaid').value = data.work.unpaid || 0;
 
-    // 振り返り
     document.getElementById('reflection').value = data.reflection || '';
   },
 
   createExpenseLine(e, idx) {
     const wrapper = document.createElement('div');
     wrapper.style.marginBottom = '4px';
-
     const div = document.createElement('div');
     div.className = 'line-item expense';
     div.innerHTML = `
@@ -1024,8 +1133,6 @@ const App = {
       <button class="remove-btn" data-idx="${idx}">×</button>
     `;
     wrapper.appendChild(div);
-
-    // 分類説明
     const descEl = document.createElement('div');
     descEl.className = 'category-desc';
     if (e.category && CATEGORY_DESC_MAP[e.category]) {
@@ -1033,8 +1140,6 @@ const App = {
       descEl.classList.add('visible');
     }
     wrapper.appendChild(descEl);
-
-    // イベント
     const sel = div.querySelector('select');
     sel.addEventListener('change', () => {
       this.updateExpenseLine(idx, 'category', sel.value);
@@ -1122,6 +1227,9 @@ const App = {
     this.collectCurrentDayData();
     this.saveMonthData();
     this.toast('✅ 保存しました');
+    // 未入力バナーを消す
+    const slot = document.getElementById('notify-banner-slot');
+    if (slot) slot.innerHTML = '';
   },
 
   // ===== ホーム =====
@@ -1178,7 +1286,6 @@ const App = {
     trTotal.innerHTML = `<td>合計〔B〕</td><td class="amount">¥${total.toLocaleString()}</td>`;
     tbody.appendChild(trTotal);
 
-    // 収入欄（初回のみDOM構築）
     if (!this.state.incomeInputsInitialized) {
       const incEl = document.getElementById('income-settings');
       const incomeFields = [
@@ -1214,7 +1321,6 @@ const App = {
 
     this.updateSummaryCalculations();
 
-    // 休暇
     const leaveCount = {};
     Object.values(md.days).forEach(d => {
       const lv = d.work.leave;
@@ -1295,6 +1401,7 @@ const App = {
     document.getElementById('set-commuting').value = s.commuting || 0;
     const hourly = (s.basic + s.regional) * 12 / 1860;
     document.getElementById('set-hourly').textContent = '¥' + hourly.toFixed(1);
+    this.updateNotifyStatus();
   },
 
   // ===== ユーティリティ =====
@@ -1410,118 +1517,6 @@ const App = {
 
 document.addEventListener('DOMContentLoaded', () => App.init());
 </script>
-// ===== 通知機能 =====
-const NOTIFICATION_TIME = '21:00'; // 通知する時刻（24時間表記）
 
-// Service WorkerをBlob URLでインライン登録
-function registerNotificationSW() {
-  if (!('serviceWorker' in navigator) || !('Notification' in window)) {
-    console.log('通知機能非対応');
-    return;
-  }
-
-  const swCode = `
-    let notificationTime = '21:00';
-    let lastNotifiedDate = '';
-
-    self.addEventListener('message', (event) => {
-      if (event.data.type === 'SET_TIME') {
-        notificationTime = event.data.time;
-      }
-    });
-
-    self.addEventListener('install', (event) => {
-      self.skipWaiting();
-    });
-
-    self.addEventListener('activate', (event) => {
-      event.waitUntil(self.clients.claim());
-    });
-
-    // 定期的にチェック（1分ごと）
-    self.addEventListener('activate', () => {
-      setInterval(() => {
-        const now = new Date();
-        const currentTime = String(now.getHours()).padStart(2,'0') + ':' + String(now.getMinutes()).padStart(2,'0');
-        const today = now.toISOString().slice(0,10);
-        
-        if (currentTime === notificationTime && lastNotifiedDate !== today) {
-          lastNotifiedDate = today;
-          self.registration.showNotification('📝 実態点検手帳', {
-            body: '今日の記録をつけましょう！',
-            icon: self.registration.scope + 'favicon.ico',
-            badge: self.registration.scope + 'favicon.ico',
-            tag: 'daily-reminder',
-            requireInteraction: false,
-            vibrate: [200, 100, 200]
-          });
-        }
-      }, 60000);
-    });
-  `;
-
-  const blob = new Blob([swCode], { type: 'application/javascript' });
-  const swUrl = URL.createObjectURL(blob);
-
-  navigator.serviceWorker.register(swUrl, { scope: './' })
-    .then(reg => {
-      console.log('Service Worker登録成功');
-      // 通知時刻をService Workerに送信
-      reg.active && reg.active.postMessage({ type: 'SET_TIME', time: NOTIFICATION_TIME });
-    })
-    .catch(err => console.log('Service Worker登録失敗:', err));
-}
-
-// 通知許可リクエスト
-async function requestNotificationPermission() {
-  if (!('Notification' in window)) return;
-  
-  if (Notification.permission === 'default') {
-    // 初回起動時に許可を求める
-    const permission = await Notification.requestPermission();
-    if (permission === 'granted') {
-      showToast('🔔 通知を有効にしました');
-      registerNotificationSW();
-    }
-  } else if (Notification.permission === 'granted') {
-    registerNotificationSW();
-  }
-}
-
-// 未入力チェック通知
-function checkUnsentDays() {
-  if (Notification.permission !== 'granted') return;
-  
-  const today = new Date();
-  const yesterday = new Date(today);
-  yesterday.setDate(yesterday.getDate() - 1);
-  
-  const yesterdayKey = `${yesterday.getFullYear()}-${String(yesterday.getMonth()+1).padStart(2,'0')}-${String(yesterday.getDate()).padStart(2,'0')}`;
-  
-  // 昨日が未入力の場合
-  if (!App.state.monthData.days[yesterdayKey]) {
-    // すでに今日の通知を送っていたらスキップ
-    const lastCheck = localStorage.getItem('lastUnsentCheck');
-    const todayStr = today.toISOString().slice(0,10);
-    if (lastCheck === todayStr) return;
-    
-    localStorage.setItem('lastUnsentCheck', todayStr);
-    
-    new Notification('📝 実態点検手帳', {
-      body: '昨日の記録が未入力です。つけ忘れではありませんか？',
-      tag: 'unsent-reminder',
-      vibrate: [200, 100, 200]
-    });
-  }
-}
-
-// 初期化
-document.addEventListener('DOMContentLoaded', () => {
-  // 既存のApp.init()の後に実行
-  setTimeout(() => {
-    requestNotificationPermission();
-    checkUnsentDays();
-  }, 2000);
-});
 </body>
 </html>
